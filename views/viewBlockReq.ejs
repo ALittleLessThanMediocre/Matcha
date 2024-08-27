@@ -1,0 +1,50 @@
+<%- include ('./include/head') %>
+<%- include ('./include/adminNav') %>
+<center>
+    <br><strong><h3>Complaint About</h3></strong>
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card card-body">
+                <% if (!ret2[0].profilePicture) { %>
+                        <img src="../images/default.jpeg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%;">
+                <% } else { %>
+                    <% if (ret2[0].profilePicture.match(/userPic/g)) { %>
+                        <img src="/<%= ret2[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;">
+                    <% } else { %>
+                        <img src="<%= ret2[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;">
+                    <% } %>
+                <% } %>
+                <p>User Name: <strong><%= ret2[0].userName %></strong></p>
+                <p>First Name: <strong><%= ret2[0].firstName %></strong></p>
+                <p>Last Name: <strong><%= ret2[0].lastName %></strong></p>
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="p-3">
+                        <a href="/suspendAcc/<%- ret2[0].id %>">
+                            <i data-toggle="tooltip" data-placement="top" title="Suspend Account" class="fa fa-balance-scale"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <strong><h3>Requester</h3></strong>
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card card-body">
+                <% if (!ret1[0].profilePicture) { %>
+                        <img src="../images/default.jpeg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%;">
+                <% } else { %>
+                    <% if (ret1[0].profilePicture.match(/userPic/g)) { %>
+                        <img src="/<%= ret1[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;">
+                    <% } else { %>
+                        <img src="<%= ret1[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;">
+                    <% } %>
+                <% } %>
+                <p>User Name: <strong><%= ret1[0].userName %></strong></p>
+                <p>First Name: <strong><%= ret1[0].firstName %></strong></p>
+                <p>Last Name: <strong><%= ret1[0].lastName %></strong></p>
+            </div>
+        </div>
+    </div>
+</center>

@@ -1,0 +1,88 @@
+
+<center>
+    <% if (session.extProfComp != 1 && session.email != "admin@matcha.com") { %>
+        <%- include ('./include/head') %>
+        <%- include ('./include/nav') %>
+        <%- include ('./include/notification')%>
+        <br><br><p>Please complete your extended profile to enjoy the site's full features</p>
+        <a href="/updateProfile">Update Profile</a>
+        <br><br>
+    <% } %>
+    <% if (session.extProfComp == 1 && session.email != "admin@matcha.com") { %>
+        <%- include ('./include/head') %>
+        <%- include ('./include/nav') %>
+        <div class="row mt-5">
+        <p id="session" hidden><%= session.email %></p>
+            <div class="col-md-6 m-auto">
+                <div class="card card-body">
+                    <br><br>
+                    <% if (!result[0].profilePicture) { %>
+                            <img src="../images/default.jpeg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%;">
+                    <% } else { %>
+                        <% if (result[0].profilePicture.match(/userPic/g)) { %>
+                            <img src="/<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;">
+                        <% } else { %>
+                            <img src="<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;>
+                        <% } %>
+                    <% } %>
+                    <br><br><div class="other padd_bot">
+                        <hr><p>User Name: <strong><%= result[0].userName %></strong></p><hr>
+                        <p>First Name: <strong><%= result[0].firstName %></strong></p><hr>
+                        <p>Last Name: <strong><%= result[0].lastName %></strong></p><hr>
+                        <p>Gender: <strong><%= result[0].gender %></strong></p><hr>
+                        <p>Sexual Orientation: <strong><%= result[0].sexualOrientation %></strong></p><hr>
+                        <p>Age: <strong><%= result[0].age %></strong></p><hr>
+                        <p>Bio: <strong><%= result[0].bio %></strong></p><hr>
+                        <p>City: <strong><%= result[0].city %></strong></p><hr>
+                        <p>Intersts: <strong><%= result[0].interest1 %>  <%= result[0].interest2 %> <%= result[0].interest3 %> <%= result[0].interest4 %></strong></p><hr>
+                        <% if (result[0].online == 'Y') { %>
+                            <p>Online Now: <strong>YES</strong></p>
+                        <% } else { %>
+                            <p>Online Now: <strong>NO</strong></p>
+                        <% } %><hr>
+                        <% if (like) { %>
+                            <p>Likes Me: <strong>YES</strong></p>
+                        <% } else { %>
+                            <p>Likes Me: <strong>NO</strong></p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <% if (session.email == "admin@matcha.com") { %>
+        <%- include ('./include/head') %>
+        <%- include ('./include/adminNav') %>
+
+        <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+                <div class="card card-body">
+                    <br><br>
+                    <% if (!result[0].profilePicture) { %>
+                            <img src="../images/default.jpeg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%;">
+                    <% } else { %>
+                        <% if (result[0].profilePicture.match(/userPic/g)) { %>
+                            <img src="/<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;>
+                        <% } else { %>
+                            <img src="<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="display: block; margin-left: auto; margin-right: auto;>
+                        <% } %>
+                    <% } %>
+                    <br><br><div class="other padd_bot">
+                        <hr><p>User Name: <strong><%= result[0].userName %></strong></p><hr>
+                        <p>First Name: <strong><%= result[0].firstName %></strong></p><hr>
+                        <p>Last Name: <strong><%= result[0].lastName %></strong></p><hr>
+                        <p>Gender: <strong><%= result[0].gender %></strong></p><hr>
+                        <p>Sexual Orientation: <strong><%= result[0].sexualOrientation %></strong></p><hr>
+                        <p>Age: <strong><%= result[0].age %></strong></p><hr>
+                        <p>Bio: <strong><%= result[0].bio %></strong></p><hr>
+                        <p>City: <strong><%= result[0].city %></strong></p><hr>
+                        <p>Intersts: <strong><%= result[0].interest1 %>  <%= result[0].interest2 %> <%= result[0].interest3 %> <%= result[0].interest4 %></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</center>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>

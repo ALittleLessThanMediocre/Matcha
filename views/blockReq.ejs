@@ -1,0 +1,41 @@
+<%- include ('./include/head') %>
+<%- include ('./include/adminNav') %>
+<h1 class="mt-4">Block Requests</h1><br>
+<%- include ('./partials/messages') %>
+<p class="lead mb-3"><%= session.userName %></p><br>
+
+<div class="container mt-2">
+        <div class="card h-100">
+            <div class="card-body">
+                <strong><h3>Block Request</h3></strong>
+                <br>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th >ID</th>
+                      <th >Complainant</th>
+                      <th >Offender</th>
+                      <th >Date</th>
+                      <th >evaluate</th>
+                    </tr>
+                    <tbody>
+                      <% for (let i = 0; i < result.length; i++) {%>
+                      <tr>
+                        <td><%- result[i].userId %></td>
+                        <td><%- result[i].userName %></td>
+                        <td><%- result[i].blocked %></td>
+                        <td><%= result[i].date.getDate() + "/" + result[i].date.getMonth() + "/" + result[i].date.getFullYear() %></td>
+                        <td>
+                          <a href="/viewBlockReq/<%- result[i].userId %>">
+                            <i data-toggle="tooltip" data-placement="top" title="View Report" class="fa fa-book"></i>
+                          </a>
+                        </td>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </thead>
+                </table>
+            </div>
+        </div>
+    <br>
+</div>

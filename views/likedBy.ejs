@@ -1,0 +1,79 @@
+<%- include ('./include/head') %>
+<%- include ('./include/nav') %>
+<h1 class="mt-4">Liked By</h1><br>
+<%- include ('./partials/messages') %>
+<%- include ('./include/notification')%>
+
+<% if (session.suspended == 1) { %>
+    <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+
+<% if (session.extProfComp != 1 && session.suspended != 1) { %>
+        <p>Please complete your extended profile to enjoy the site's full features</p>
+        <a href="/updateProfile">Update Profile</a>
+        <br><br>
+<% } %>
+
+<% if (session.extProfComp == 1 && session.suspended != 1) { %>
+    <div class="d-sm-flex flex-row flex-wrap">
+    <p id="session" hidden><%= session.email %></p>
+        <% for (let i = 0; i < ret.length; i++) { %>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                                <% if (session.extProfComp != 1) { %>
+                                    <% if (!ret[i].profilePicture) { %>
+                                        <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                    <% } else { %>
+                                    <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                    <% } %>
+                                <% } %>
+                                <% if (session.extProfComp == 1) { %>
+                                    <% if (!ret[i].profilePicture) { %>
+                                        <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                    <% } else { %>
+                                    <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                    <% } %>
+                                <% } %>
+                                <div>
+                                    <% if (ret[i].online == 'Y') { %> 
+                                        <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                    <% } else { %>
+                                        <h3><i data-toggle="tooltip" data-placement="top" title="<%= ret[i].lastOn %>">&#x1F494</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                    <% } %>
+                                </div>
+                                <strong><h5><%= ret[i].city %></h5></strong>
+                                <% if (ret[i].bio.length > 75) { %>
+                                    <p><%= ret[i].bio.substring(0,75) %>...</p>
+                                <% }else { %>
+                                    <p><%= ret[i].bio.substring(0,75) %></p>
+                                <% } %>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="p-3">
+                                        <a href="/likeV4/<%- ret[i].viewToken %>">
+                                            <i data-toggle="tooltip" data-placement="top" title="Like" class="fa fa-heart"></i>
+                                        </a>
+                                    </div>
+                                    <div class="p-3">
+                                        <a href="/viewProf/<%- ret[i].viewToken%>">
+                                            <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye"></i>
+                                        </a>
+                                    </div>
+                                    <div class="p-3">
+                                        <a href="/report/<%- ret[i].viewToken%>">
+                                            <i data-toggle="tooltip" data-placement="top" title="Report" class="fa fa-exclamation-triangle"></i>
+                                        </a>
+                                    </div>
+                                    <div class="p-3">
+                                        <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star"> <%= ret[i].popularity %> </i>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            <br>
+        <% } %>
+        </div>
+<% } %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>

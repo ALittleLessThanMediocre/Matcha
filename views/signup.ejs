@@ -1,0 +1,99 @@
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+           <h1 class="text-center mb-3"><i class="fas fa-user-plus"></i></i>Signup</h1> 
+           <%- include ('./partials/messages') %>
+           <form action="/signup" method="post">
+                <div class="form-group">
+                    <label for="userName">Username</label>
+                    <input 
+                    type="name" 
+                    name="userName" 
+                    id="userName" 
+                    class="form-control" 
+                    placeholder="Enter Username"
+                    value="<%= typeof userName != 'undefined' ? userName : '' %>"
+                    pattern="([A-Za-z]{2,})"
+                    title="Names can only include uppercase or lowercase letters and must be at least 2 characters long"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input 
+                    type="name" 
+                    name="firstName" 
+                    id="firstName" 
+                    class="form-control" 
+                    placeholder="Enter First Name"
+                    value="<%= typeof firstName != 'undefined' ? firstName : '' %>"
+                    pattern="([A-Za-z]{2,})"
+                    title="Names can only include uppercase or lowercase letters and must be at least 2 characters long"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input 
+                    type="name" 
+                    name="lastName" 
+                    id="lastName" 
+                    class="form-control" 
+                    placeholder="Enter Last Name"
+                    value="<%= typeof lastName != 'undefined' ? lastName : '' %>"
+                    pattern="([A-Za-z]{2,})"
+                    title="Names can only include uppercase or lowercase letters and must be at least 2 characters long"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Enter Email"
+                    value="<%= typeof email != 'undefined' ? email : '' %>" 
+                    title="Invalid email, please try again"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter Password"
+                    value="<%= typeof password != 'undefined' ? password : '' %>" 
+                    pattern="(?=.*[A-Za-z])(?=.*\d)([A-Za-z\d!$%@#£€*?&]{8,})"
+                    title="password must be at least 8 characters, include at least one uppercase letter, one lowercase letter, and one number"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <div class="form-group">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password"
+                    id="password2"
+                    name="password2"
+                    class="form-control"
+                    placeholder="Confirm Password"
+                    value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+                    pattern="(?=.*[A-Za-z])(?=.*\d)([A-Za-z\d!$%@#£€*?&]{8,})"
+                    title="Password must be at least 8 characters, include at least one uppercase letter, one lowercase letter, and one number"
+                    required>
+                    <div class="valid-feedback">Valid</div>
+                    <div class="invalid-feedback">Please fill out this field</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Signup</button>
+            </form>
+            <br>
+            <p class="lead mt-4">Have An Account ? <a href="/login">Login</a></p>
+        </div>
+    </div>
+</div>

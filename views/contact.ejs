@@ -1,0 +1,14 @@
+<%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
+<div class="container mt-5">
+<p id="session" hidden><%= session.email %></p>
+  <div class="text-center">
+    <p style="font: 4em sans-serif;">
+        Contact us
+    </p>
+    <p style="font: 1em sans-serif;">matchatmp2019@gmail.com</p>
+  </div>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>

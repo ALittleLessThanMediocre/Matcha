@@ -1,0 +1,248 @@
+<%- include ('./include/nav') %>
+<h1 class="mt-4">Search</h1><br>
+<%- include ('./include/notification')%>
+
+<% if (session.suspended == 1) {%>
+  <p>Follwing a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+<% if (session.suspended != 1) { %> 
+  <% if (session.extProfComp != 1) { %>
+      <p>Please complete your extended profile to enjoy the site's full features</p>
+      <a href="/updateProfile">Update Profile</a>
+      <br><br>
+  <% } %>
+  <% if (session.extProfComp == 1) { %>
+      <style>
+          .custom-range {
+              width: 50%;
+          } 
+      </style>
+      <div class="container">
+      <p id="session" hidden><%= session.email %></p>
+              <div class="card card-body mt-4">
+                <p id="session4" hidden><%- session.username %></p>
+                  <h3><i class="fas fa-search"></i> Search</h3>
+                  <hr>
+                  <form name="search" action="/search" method="post" >
+                      <h5>Age</h5>
+                      <div class="form-control-inline">
+                          <div class="row m-1">
+                              <div class="col-sm-10">
+                                  <div class="checkbox">
+                                      <label><input name="age" type="checkbox" value="25">[18-25]</label>&nbsp;
+                                      <label><input name="age" type="checkbox" value="35">[26-35]</label>&nbsp;
+                                      <label><input name="age" type="checkbox" value="45">[36-45]</label>&nbsp;
+                                      <label><input name="age" type="checkbox" value="55">[46-55]</label>&nbsp;
+                                      <label><input name="age" type="checkbox" value="56">[56+]</label>&nbsp;
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <h5>Tags</h5>
+                      <div class="form-control-inline">
+                          <div class="form-inline">
+                              <div class="form-group m-2">
+                                  <select name="interest1">
+                                          <option value="Unchanged">Unchanged</option>
+                                          <option value="#Traveling">#Traveling</option>
+                                          <option value="#Dancing">#Dancing</option>
+                                          <option value="#Exercise">#Exercise</option>
+                                  </select>
+                              </div>
+                              <div class="form-group m-2">
+                                  <select name="interest2">
+                                          <option value="Unchanged">Unchanged</option>
+                                          <option value="#Outdoors">#Outdoors</option>
+                                          <option value="#Politics">#Politics</option>
+                                          <option value="#Cooking">#Cooking</option>
+                                  </select>
+                              </div>
+                              <div class="form-group m-2">
+                                  <select name="interest3">
+                                          <option value="Unchanged">Unchanged</option>
+                                          <option value="#Photography">#Photography</option>
+                                          <option value="#Sports">#Sports</option>
+                                          <option value="#Pets">#Pets</option>
+                                  </select>
+                              </div>
+                              <div class="form-group m-2">
+                                  <select name="interest4">
+                                          <option value="Unchanged">Unchanged</option>
+                                          <option value="#Art">#Art</option>
+                                          <option value="#Learning">#Learning</option>
+                                          <option value="#Music">#Music</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <h5>Location</h5>
+                          <div class="slidecontainer m-2">
+                              <label for="customRange">Distance from me</label><br>
+                          <input name="location" type="range" class="custom-range" min="1" max="100" id="customRange1" value="100">
+                              <p>Within: <span id="distance"></span> kilometers</p>
+                          </div>
+                      <hr>
+                      <h5>Popularity</h5>
+                      <div class="slidecontainer m-2">
+                          <input name="popularity" type="range" class="custom-range" min="0" max="10" id="customRange2" value="0">
+                              <p>Rating <span id="popularity"></span> <i class="fa fa-star"></i></p>
+                          </div>
+                      <hr>
+                      <h5>Filter by: </h5>
+                      <div class="form-check form-check-inline">
+                          <div class="d-sm-flex flex-row justify-content-center">
+                              <div class="p-2">
+                                  <label class="form-check-label">
+                                      <input type="radio" name="filter" value="age" class="form-check-input">Age
+                                  </label>
+                              </div>
+                              <div class="p-2">
+                                  <label class="form-check-label">
+                                      <input type="radio" name="filter" value="tags" class="form-check-input">Tags
+                                  </label>
+                              </div>
+                              <div class="p-2">
+                                  <label class="form-check-label">
+                                      <input type="radio" name="filter" value="location" class="form-check-input">Location
+                                  </label>
+                              </div>
+                              <div class="p-2">
+                                  <label class="form-check-label">
+                                      <input type="radio" name="filter" value="popularity" class="form-check-input">Popularity
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <script>
+          var slider1 = document.getElementById("customRange1");
+          var output1 = document.getElementById("distance");
+          output1.innerHTML = slider1.value;
+          slider1.oninput = function() {
+              output1.innerHTML = this.value;
+              document.forms['search']['location'].value = this.value;
+          }
+          var slider2 = document.getElementById("customRange2");
+          var output2 = document.getElementById("popularity");
+          output2.innerHTML = slider2.value;
+          slider2.oninput = function() {
+              if (this.value != "0") {
+              output2.innerHTML = this.value;
+              document.forms['search']['popularity'].value = this.value;
+              }
+          }
+      </script>
+      <% if(locals.ret) {%>
+        <div class="container d-sm-flex flex-row flex-wrap">
+          <% for (let i = 0; i < ret.length; i++) { %>
+              <% if((ret[i].id != session.objId || ret[i].extProfComp != 1) && ret[i].username != 'admin' && ret[i].suspended != 1 ){%>
+              <div class="col-lg-3 col-md-6 mb-3">
+                      <div class="card h-100">
+                          <div class="card-body text-center">
+                            <% if (session.extProfComp != 1) { %>
+                                <% if (!ret[i].profilePicture) { %>
+                                    <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                <% } else { %>
+                                  <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                                    <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="border p-1 rounded-circle mb-3" style="filter: blur(8px);">
+                                  <% } else { %>
+                                    <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                  <% } %>
+                              <% } %>
+                            <% } %>
+                            <% if (session.extProfComp == 1) { %>
+                                <% if (!ret[i].profilePicture) { %>
+                                    <img src="/default.jpg" alt="" width="150" height="150" class="img-thumbnail mb-3 rounded-circle ">
+                                <% } else { %>
+                                  <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                                    <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150"  class="border p-1 mb-3 rounded-circle">
+                                  <% } else { %>
+                                    <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="img-thumbnail mb-3 rounded-circle">
+                                  <% } %>
+                                <% } %>
+                            <% } %>
+                            <div>
+                              <% if (ret[i].online == 'Y') { %> 
+                                  <h3><i data-toggle="tooltip" data-placement="top" title="ONLINE"> &#x1F49A</i> <%= ret[i].firstname %><p><%= ret[i].age %></p></h3>
+                              <% } else { %>
+                                  <h3><i data-toggle="tooltip" data-placement="top" title="LAST SEEN: <%- ret[i].lastOn%>">&#x1F494</i> <%= ret[i].firstname %><p><%= ret[i].age %></p></h3>
+                              <% } %>
+                            </div>
+                              <strong><h5><%- ret[i].city%></h5></strong>
+                              <%  if(ret[i].bio.length > 75){%>
+                                      <p><%= ret[i].bio.substring(0, 75) + "..."; %></p>
+                              <%  }else{ %>
+                                      <p><%= ret[i].bio; %></p>
+                              <%  } %>
+                          </div> 
+                          <div class="card-footer">
+                            <div class="d-sm-flex flex-row justify-content-center">
+                                <div class="p-2">
+                                    <a id="like5" href="/likeV5/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                        <i class="fa fa-heart" ></i>
+                                    </a>
+                                </div>
+                                <div class="p-2">
+                                    <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </div>
+                                <div class="p-2">
+                                    <a href="/report/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                    </a>
+                                </div>
+                                <div class="p-2">
+                                    <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= ret[i].popularity %></i>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <br>
+                  <% } %>
+              <% } %>
+              </div>
+              <div >
+              <% if (pages > 0) { %>
+                <ul class="pagination justify-content-center">
+                  <% if (current == 1) { %>
+                      <li class="disabled page-item"><a class="page-link" href="">First</a></li>
+                  <% } else { %>
+                      <li class="page-item"><a class="page-link" href="/search?page=1">First</a></li>
+                  <% } %>
+                  <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                  <% if (i !== 1) { %>
+                      <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+                  <% } %>
+                  <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                      <% if (i == current) { %>
+                          <li class="active page-item" aria-current="page"><span class="page-link"><%= i %><span class="sr-only">(current)</span></span></li>
+                      <% } else { %>
+                          <li class="page-item"><a class="page-link" href="/search?page=<%- i %>"><%= i %></a></li>
+                      <% } %>
+                      <% if (i == Number(current) + 4 && i < pages) { %>
+                          <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+                      <% } %>
+                  <% } %>
+                  <% if (current == pages) { %>
+                      <li class="disabled page-item"><a class="page-link" href="">Last</a></li>
+                  <% } else { %>
+                      <li class="page-item"><a class="page-link" href="/search?page=<%- pages %>">Last</a></li>
+                  <% } %>
+              </ul>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+      <% } %>
+  <% } %>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/socketEvents.js"></script>  

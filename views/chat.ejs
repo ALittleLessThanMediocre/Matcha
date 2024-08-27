@@ -1,0 +1,53 @@
+<%- include ('./include/nav') %>
+
+<div class="row mt-2">
+  <div class="col-md-6 m-auto">
+    <div class="row">
+      <div class="col ">
+        <h1 class="ml-2"> Message</h1>
+      </div>
+      <div class="col text-center mt-2">
+        <% if (ret[0].online == 'Y') { %> 
+          <h4><i data-toggle="tooltip" data-placement="top" title="ONLINE"> &#x1F49A</i> <%= ret[0].firstName %></h4>
+        <% } else { %>
+          <h4><i data-toggle="tooltip" data-placement="top" title="LAST SEEN: <%- ret[0].lastOn %>">&#x1F494</i> <%= ret[0].firstName %></h4>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row ">
+  </div>
+    <div class="col-md-6 ml-2 m-auto">
+        <div class="card card-body">
+            <%- include('./partials/messages') %>
+            <div id="chatBox" class="card card-body" style="overflow-y:auto; height:400px">
+              <div id="chatMessage">
+                <% for(let i = 0; i < result.length; i++) {%>
+                <div class="alert alert-secondary">
+                  <p ><strong><%= result[i].sender %></strong> <span><%= result[i].date %></span></p>
+                  <p >
+                    <%= result[i].message %>
+                  </p>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <p id="sender1" hidden><%- session.email %></p>
+            <p id="receiver1" hidden><%- ret[0].email %></p>
+            <form id="chat-form">
+              <input id="sender" type="hidden" name="sender" value="<%- session.email %>">
+              <input id="receiver" type="hidden" name="receiver" value="<%- ret[0].email %>">
+              <div class="form-group mt-2 grey-border-focus">
+                  <textarea id="message" style="overflow:auto;resize:none;" class="form-control" name="message" cols="10" rows="3"
+                  placeholder="Message..."></textarea>
+              </div>
+              <br>
+              <button type="submit" id="send" class="btn btn-primary btn-block">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socket.js"></script>

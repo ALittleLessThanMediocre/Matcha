@@ -1,0 +1,39 @@
+<% if (typeof errors !== 'undefined') { %>
+    <% errors.forEach(function(error) { %>
+    <div class="alert alert-warning alert-dismissable show" role="alert">
+        <%= error.msg %>
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% }); %>
+<% } %>
+
+<% if (typeof success !== 'undefined') { %>
+    <% success.forEach(function(success) { %>
+    <div class="alert alert-success alert-dismissable show" role="alert">
+        <%= success.msg %>
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% }); %>
+<% } %>
+
+<% if (success_msg != '') { %>
+    <div class="alert alert-success alert-dismissable show" role="alert">
+        <%= success_msg %>
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<% } %>
+
+<% if (error_msg != '') { %>
+    <div class="alert alert-warning alert-dismissable show" role="alert">
+        <%= error_msg %>
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<% } %>

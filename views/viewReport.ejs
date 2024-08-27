@@ -1,0 +1,49 @@
+<%- include ('./include/head') %>
+<%- include ('./include/adminNav') %>
+<center>
+    <br><strong><h3>Complaint About</h3></strong>
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card card-body">
+                <% if (!result[0].profilePicture) { %>
+                        <img src="../images/default.jpeg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%;">
+                <% } else { %>
+                    <% if (result[0].profilePicture.match(/userPic/g)) { %>
+                        <img src="/<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                    <% } else { %>
+                        <img src="<%= result[0].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                    <% } %>
+                <% } %>
+                <p>User Name: <strong><%= result[0].userName %></strong></p>
+                <p>First Name: <strong><%= result[0].firstName %></strong></p>
+                <p>Last Name: <strong><%= result[0].lastName %></strong></p>
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="p-3">
+                        <a href="/suspendAcc/<%- ret[0].complaintAbout %>">
+                            <i data-toggle="tooltip" data-placement="top" title="Suspend Account" class="fa fa-balance-scale"></i>
+                        </a>
+                    </div>
+                    <div class="p-3">
+                        <a href="/deleteAcc/<%- ret[0]._id %>">
+                            <i data-toggle="tooltip" data-placement="top" title="Delete Account" class="fa fa-ban"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <strong><h3>Report</h3></strong><br>
+    <div class="d-sm-flex flex-row flex-wrap">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <strong><h3><%= ret[0].subject %></h3></strong>
+                    <br>
+                    <p><%= ret[0].text %></p>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+</center>

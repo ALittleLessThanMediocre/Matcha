@@ -1,0 +1,212 @@
+<% if (session.suspended == 1) { %>
+<%- include ('./include/head') %>
+<%- include ('./include/nav') %>
+
+<h1 class="mt-4">Home</h1><br>
+<%- include ('./partials/messages') %>
+<p class="lead mb-3">Welcome <%= session.userName %></p><br>
+    <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+
+<% if (session.email != "admin@matcha.com" && session.suspended != 1) { %>
+<%- include ('./include/head') %>
+<%- include ('./include/nav') %>
+
+<h1 class="mt-4">Home</h1><br>
+<%- include ('./partials/messages') %>
+<%- include ('./include/notification')%>
+<p class="lead mb-3">Welcome <%= session.userName %></p><br>
+<p id="session" hidden><%= session.email %></p>
+    <div class="d-sm-flex flex-row flex-wrap">
+        <% for (let i = 0; i < ret.length; i++) { %>
+            <% if ((ret[i].id != session.ID || ret[i].extProfComp != 1 ) && (ret[i].email != "admin@matcha.com") && (ret[i].email != session.email)) { %>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                    <% if (session.extProfComp != 1) { %>
+                                        <% if (!ret[i].profilePicture) { %>
+                                            <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                        <% } else { %>
+                                        <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                        <% } %>
+                                    <% } %>
+                                    <% if (session.extProfComp == 1) { %>
+                                        <% if (!ret[i].profilePicture) { %>
+                                            <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                        <% } else { %>
+                                            <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                                                <img src="/<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                            <% } else { %>
+                                                <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                            <% } %>
+                                        <% } %>
+                                    <% } %>
+                                    <div>
+                                        <% if (ret[i].online == 'Y') { %> 
+                                            <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                        <% } else { %>
+                                            <h3><i data-toggle="tooltip" data-placement="top" title="<%= ret[i].lastOn %>">&#x1F494</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <strong><h5><%= ret[i].city %></h5></strong>
+                                    <% if (ret[i].bio.length > 75) { %>
+                                        <p><%= ret[i].bio.substring(0,75) %>...</p>
+                                    <% }else { %>
+                                        <p><%= ret[i].bio.substring(0,75) %></p>
+                                    <% } %>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        
+                                        <div class="p-3">
+                                            <% if (session.profilePicture) { %>
+                                                <a href="/like/<%- ret[i].viewToken %>">
+                                                <i data-toggle="tooltip" data-placement="top" title="Like" class="fa fa-heart"></i>
+                                            </a>
+                                            <% } %>
+                                        </div>
+                                        <div class="p-3">
+                                            <a href="/viewProf/<%- ret[i].viewToken %>">
+                                                <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye"></i>
+                                            </a>
+                                        </div>
+                                        <div class="p-3">
+                                            <a href="/report/<%- ret[i].viewToken %>">
+                                                <i data-toggle="tooltip" data-placement="top" title="Report" class="fa fa-exclamation-triangle"></i>
+                                            </a>
+                                        </div>
+                                        <div class="p-3">
+                                            <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star"> <%= ret[i].popularity %> </i>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                <br>
+            <% } %>
+        <% } %>
+    </div>
+    <% if (pages > 0) { %>
+        <ul class="pagination">
+            <% if (current == 1) { %>
+                <li class="disabled page-item"><a class="page-link" href="">First</a></li>
+            <% } else { %>
+                <li class="page-item"><a class="page-link" href="/loginLanding/1">First</a></li>
+            <% } %>
+            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+            <% if (i !== 1) { %>
+                <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+            <% } %>
+            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                <% if (i == current) { %>
+                    <li class="active page-item"><a class="page-link" href="/loginLanding/1"><%= i %></a></li>
+                <% } else { %>
+                    <li class="page-item"><a class="page-link" href="/loginLanding/<%- i %>"><%= i %></a></li>
+                <% } %>
+                <% if (i == Number(current) + 4 && i < pages) { %>
+                    <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+                <% } %>
+            <% } %>
+            <% if (current == pages) { %>
+                <li class="disabled page-item"><a class="page-link" href="">Last</a></li>
+            <% } else { %>
+                <li class="page-item"><a class="page-link" href="/loginLanding/<%- pages %>">Last</a></li>
+            <% } %>
+        </ul>
+    <% } %>
+<% } if (session.email == "admin@matcha.com") { %>
+    <%- include ('./include/head') %>
+    <%- include ('./include/adminNav') %>
+    
+    <h1 class="mt-4">Home</h1><br>
+    <h2>Users currently online <%= (pages * 8) - 1 %></h2><br>
+    <%- include ('./partials/messages') %>
+    <p class="lead mb-3"><%= session.userName %></p><br>
+    <div class="d-sm-flex flex-row flex-wrap">
+        <% if (ret.length > 1) { %>
+            <% for (let i = 0; i < ret.length; i++) { %>
+                <% if ((ret[i].email != session.email || ret[i].extProfComp != 1 )) { %>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                        <% if (session.extProfComp != 1) { %>
+                                            <% if (!ret[i].profilePicture) { %>
+                                                <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                            <% } else { %>
+                                            <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
+                                            <% } %>
+                                        <% } %>
+                                        <% if (session.extProfComp == 1) { %>
+                                            <% if (!ret[i].profilePicture) { %>
+                                                <img src="images/default.jpeg" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                            <% } else { %>
+                                                <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                                                    <img src="/<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                                <% } else { %>
+                                                    <img src="<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
+                                                <% } %>
+                                            <% } %>
+                                        <% } %>
+                                        <div>
+                                            <% if (ret[i].online == 'Y') { %> 
+                                                <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                            <% } else { %>
+                                                <h3><i data-toggle="tooltip" data-placement="top" title="<%= ret[i].lastOn %>">&#x1F494</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                            <% } %>
+                                        </div>
+                                        <% if (ret[i].city) %>
+                                            <strong><h5><%= ret[i].city %></h5></strong>
+                                        <% if (ret[i].bio.length > 75) { %>
+                                            <p><%= ret[i].bio.substring(0,75) %>...</p>
+                                        <% }else { %>
+                                            <p><%= ret[i].bio.substring(0,75) %></p>
+                                        <% } %>
+                                        <div class="d-flex flex-row justify-content-center">
+                                            <div class="p-3">
+                                                <a href="/viewProf/<%- ret[i].viewToken %>">
+                                                    <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye"></i>
+                                                </a>
+                                            </div>
+                                            <div class="p-3">
+                                                <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star"> <%= ret[i].popularity %> </i>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    <br>
+                <% } %>
+            <% } %>
+        <% } %>
+    </div>
+    <% if (pages != 'undefined') { %>
+        <ul class="pagination">
+            <% if (current == 1) { %>
+                <li class="disabled page-item"><a class="page-link" href="">First</a></li>
+            <% } else { %>
+                <li class="page-item"><a class="page-link" href="/loginLanding/1">First</a></li>
+            <% } %>
+            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+            <% if (i !== 1) { %>
+                <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+            <% } %>
+            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                <% if (i == current) { %>
+                    <li class="active page-item"><a class="page-link" href=""><%= i %></a></li>
+                <% } else { %>
+                    <li class="page-item"><a class="page-link" href="/loginLanding/<%- i %>"><%= i %></a></li>
+                <% } %>
+                <% if (i == Number(current) + 4 && i < pages) { %>
+                    <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+                <% } %>
+            <% } %>
+            <% if (current == pages) { %>
+                <li class="disabled page-item"><a class="page-link" href="">Last</a></li>
+            <% } else { %>
+                <li class="page-item"><a class="page-link" href="/loginLanding/<%- pages %>">Last</a></li>
+            <% } %>
+        </ul>
+    <% } %>
+<% } %>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>

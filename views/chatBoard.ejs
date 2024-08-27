@@ -1,0 +1,91 @@
+<%- include ('./include/nav') %>
+<%- include ('./include/notification')%>
+
+<% if (session.suspended == 1) {%>
+    <p>Follwing a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+<% if (session.suspended != 1) { %> 
+  <% if(session.extProfComp != 1) { %>
+    <center>
+      <div class="m-3">
+        <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
+        <a href="/updateProfile">Update Profile</a>
+      </div> 
+    </center>
+  <% } else { %>
+    <div class="container mt-2">
+    <p id="session" hidden><%= session.email %></p>
+      <h1 class="mt-4"><i class="far fa-comments-o"></i> My Chats</h1><br>
+      <%- include ('./partials/messages') %>
+      <div class="d-sm-flex flex-row flex-wrap">
+          <% for (let i = 0; i < result.length; i++) { %>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100">
+                  <a href="/chat/<%- result[i].viewToken%>">
+                    <i data-toggle="tooltip" data-placement="top" title="Chat" class="focus">
+                    <div class="card-body text-center">
+                    <% if (session.extProfComp != 1) { %>
+                      <% if (!result[i].profilePicture) { %>
+                          <img src="images/default.jpg" alt="" height="150" width="150" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                      <% } else { %>
+                        <% if (result[i].profilePicture.match(/userPic/g)) {%>
+                          <img src="/<%= result[i].profilePicture %>" alt="" height="150" width="150 class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <% } else { %>
+                          <img src="<%= result[i].profilePicture %>" alt="" height="150" width="150 class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);"> 
+                        <% } %>
+                      <% } %>
+                    <% } %>
+                    <% if (session.extProfComp == 1) { %>
+                      <% if (!result[i].profilePicture) { %>
+                          <img src="/default.jpg" alt="" height="150" width="150" class="img-thumbnail rounded-circle mb-3">
+                      <% } else { %>
+                        <% if (result[i].profilePicture.match(/userPic/g)) {%>
+                          <img src="/<%= result[i].profilePicture %>" alt="" height="150" width="150"  class="border p-1 rounded-circle mb-3">
+                        <% } else { %>
+                          <img src="<%= result[i].profilePicture %>" alt="" height="150" width="150" class="img-thumbnail rounded-circle mb-3">
+                        <% } %>
+                      <% } %>
+                    <% } %>
+                      <div>
+                        <% if (result[i].online == 'Y') { %> 
+                            <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                        <% } else { %>
+                            <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- result[i].lastOn%>">&#x1F494</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                        <% } %>
+                      </div>
+                    </div>
+                    </i>
+                  </a>
+                    <div class="card-footer">
+                      <div class="d-flex flex-row justify-content-center">
+                        <div class="p-2">
+                          <a href="/chat/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                              <i class="fa fa-comments-o"></i>
+                          </a>
+                        </div>
+                        <div class="p-2">
+                            <a href="/viewProf/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <a href="/report/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= result[i].popularity %> </i>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+          <% } %>
+        </div>
+      <% } %>
+  </div>
+<% } %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
+<%- include ('./include/footer')%>

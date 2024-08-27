@@ -1,0 +1,115 @@
+<%- include ('./include/head') %>
+<%- include ('./include/nav') %>
+
+<% if (session.suspended == 1) { %>
+  <br><br><h1 class="mb-3">Image Upload</h1><br><br>
+  <%- include ('./partials/messages') %>
+  <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+
+<% if (result[0].extProfComp != 1 && session.suspended != 1) { %>
+        <br><br><p>Please complete your extended profile to enjoy the site's full features</p>
+        <a href="/updateProfile">Update Profile</a>
+        <br><br>
+<% } %>
+
+<% if (session.extProfComp == 1 && session.suspended != 1) { %> 
+  <br><br>
+  <div class="container">
+  <p id="session" hidden><%= session.email %></p>
+      <div class="card card-body">
+              <br><h2>Profile Picture</h2><br>
+              <%- include ('./partials/messages') %>
+              <%- include ('./include/notification')%>
+          <div class="card card-body">
+          <form action="/imageUpload" method="post"
+          enctype="multipart/form-data">
+              <div class="form-group">
+                <input type="file" class="form-control-file border" name="userPic">
+              </div><br>
+              <button type="submit" class="btn btn-primary btn-block">Submit</button>
+              
+            </form>
+          </div>
+          <br>
+            <div class="card card-body">
+            <center>
+                <% if (!result[0].profilePicture) { %>
+                  <img src="images/default.jpeg" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 50%;">
+                <% } else { %>
+                <img src="<%= result[0].profilePicture %>" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 50%;">
+                <% } %>
+            </center>
+            </div>
+            <br>
+            <form action="/imageDel" method="post">
+              <button class="btn btn-secondary btn-block">Remove</button>
+            </form>
+            <br><br>
+            <div class="card card-body">
+                <h3>Gallery</h3>
+                <br>
+                <form action="/galleryUpload" method="post"
+                      enctype="multipart/form-data">
+                  <div class="form-group">
+                    <input type="file" class="form-control-file border" name="userPic">
+                  </div>
+                <div class="gal-container" style="margin-left: 20%;">
+                    <div class="row mt-4 mb-4 center">
+                        <div class="column m-1">
+                            <label class="form-check-label ">
+                          <input type="radio" name="gallery" value="g1">
+                            <% if (!result[0].pic1) { %>
+                              <img src="images/galDefault.jpeg" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } else { %>
+                            <img src="<%= result[0].pic1 %>" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } %>
+                            </label>
+                        </div>
+                        <div class="column m-1">
+                            <label class="form-check-label ">
+                            <input type="radio" name="gallery" value="g2">
+                            <% if (!result[0].pic2) { %>
+                              <img src="images/galDefault.jpeg" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } else { %>
+                            <img src="<%= result[0].pic2 %>" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } %>
+                            </label>
+                        </div>
+                        <div class="column m-1">
+                            <label class="form-check-label ">
+                            <input type="radio" name="gallery" value="g3">
+                            <% if (!result[0].pic3) { %>
+                              <img src="images/galDefault.jpeg" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } else { %>
+                            <img src="<%= result[0].pic3 %>" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } %>
+                            </label>
+                        </div>
+                        <div class="column m-1">
+                            <label class="form-check-label ">
+                            <input type="radio" name="gallery" value="g4">
+                            <% if (!result[0].pic4) { %>
+                              <img src="images/galDefault.jpeg" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } else { %>
+                            <img src="<%= result[0].pic4 %>" alt="" class="img-responsive" style="width: 150px; height: 150px; border-radius: 8px;">
+                            <% } %>
+                            </label>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form><br>
+                <form action="/galleryDel" method="post"> 
+                  <button class="btn btn-secondary btn-block">Clear Gallery</button>
+                </form>
+          </div>
+      </div>
+      <br><br>
+    </div>
+  </div>
+<% } %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
